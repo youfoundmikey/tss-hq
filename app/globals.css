@@ -103,6 +103,48 @@ button {
   margin: 22px 0 10px;
 }
 
+.status-tabs {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  margin-bottom: 4px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.status-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.status-tab {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  color: var(--cream-dim);
+  border-radius: 20px;
+  padding: 7px 12px;
+  cursor: pointer;
+}
+
+.status-tab.active {
+  background: var(--rust);
+  border-color: var(--rust);
+  color: var(--cream);
+}
+
+.status-tab-count {
+  font-size: 0.62rem;
+  opacity: 0.75;
+}
+
 .card {
   background: var(--panel);
   border: 1px solid var(--line);
