@@ -1,17 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { Idea, Status } from "@/lib/types";
-
-const STATUS_ORDER: Status[] = [
-  "Idea",
-  "Scripting",
-  "Filming",
-  "Editing",
-  "Posted",
-];
-
-const TABS: ("All" | Status)[] = ["All", ...STATUS_ORDER];
+import type { Idea } from "@/lib/types";
+import { useDashboardTab } from "./tab-context";
 
 const AGENTS = [
   { name: "Trend & Discovery", cadence: "Daily · 10:00 AM ET" },
@@ -25,7 +16,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
-  const [tab, setTab] = useState<"All" | Status>("Idea");
+  const { tab } = useDashboardTab();
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
 
   async function load() {
@@ -65,11 +56,6 @@ export default function Dashboard() {
     });
   }
 
-  const counts = STATUS_ORDER.reduce<Record<string, number>>((acc, s) => {
-    acc[s] = ideas.filter((i) => i.status === s).length;
-    return acc;
-  }, {});
-
   const visible =
     tab === "All" ? ideas : ideas.filter((i) => i.status === tab);
 
@@ -91,7 +77,9 @@ export default function Dashboard() {
         </div>
       ))}
 
-      <div className="section-title">Pipeline</div>
+      <div className="section-title">
+        Pipeline{tab !== "All" ? ` · ${tab}` : ""}
+      </div>
 
       {loading && <div className="empty">Loading from Notion…</div>}
       {error && (
@@ -105,21 +93,6 @@ export default function Dashboard() {
 
       {!loading && !error && (
         <>
-          <div className="status-tabs">
-            {TABS.map((t) => (
-              <button
-                key={t}
-                className={`status-tab${tab === t ? " active" : ""}`}
-                onClick={() => setTab(t)}
-              >
-                {t}
-                <span className="status-tab-count">
-                  {t === "All" ? ideas.length : counts[t] ?? 0}
-                </span>
-              </button>
-            ))}
-          </div>
-
           {ideas.length === 0 && (
             <div className="empty">
               Nothing in the tracker yet. Ask the chat to generate some

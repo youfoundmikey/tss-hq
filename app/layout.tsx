@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Big_Shoulders_Display, Public_Sans, Space_Mono } from "next/font/google";
 import "./globals.css";
 import TabBar from "./tab-bar";
+import { TabProvider } from "./tab-context";
 
 const bigShoulders = Big_Shoulders_Display({
   subsets: ["latin"],
@@ -44,8 +45,10 @@ export default function RootLayout({
         className={`${bigShoulders.variable} ${publicSans.variable} ${spaceMono.variable}`}
         style={{ fontFamily: "var(--font-body), sans-serif" }}
       >
-        {children}
-        <TabBar />
+        <TabProvider>
+          {children}
+          <TabBar />
+        </TabProvider>
       </body>
     </html>
   );
